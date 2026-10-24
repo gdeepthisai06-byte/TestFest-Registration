@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Fest Registration</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  color: white;
+  min-height: 100vh;
+}
+
+header {
+  padding: 22px;
+  text-align: center;
+  background: #101827;
+}
+
+header h1 {
+  margin: 0;
+  color: #00c6ff;
+}
+
+nav {
+  text-align: center;
+  padding: 15px;
+}
+
+button {
+  background: #00c6ff;
+  color: #102033;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 5px;
+}
+
+button:hover {
+  background: #67ddff;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 25px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 15px;
+}
+
+h2 {
+  text-align: center;
+  color: #00c6ff;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.message {
+  text-align: center;
+  color: #73ffb0;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  color: #172334;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+th {
+  background: #00c6ff;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #cbd5e1;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 12px;
+    padding: 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>TECH FEST</h1>
+  <p>Explore • Learn • Compete</p>
+</header>
+
+<nav>
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('register')">Register Now</button>
+  <button onclick="showPage('admin')">View Registrations</button>
+</nav>
+
+<!-- HOME PAGE -->
+<section id="home" class="page active">
+  <div class="container" style="text-align:center">
+    <h2>Welcome to Tech Fest 2026!</h2>
+    <p>Show your talent. Discover new skills. Enjoy exciting events.</p>
+    <p>Choose your favourite event and register today.</p>
+    <button onclick="showPage('register')">Register Now</button>
+  </div>
+</section>
+
+<!-- REGISTRATION PAGE -->
+<section id="register" class="page">
+  <div class="container">
+    <h2>Student Registration</h2>
+
+    <form id="registrationForm">
+      <label for="name">Student Name</label>
+      <input id="name" type="text"
+        placeholder="Enter your full name" required>
+
+      <label for="regno">Register Number</label>
+      <input id="regno" type="text"
+        placeholder="Enter register number" required>
+
+      <label for="branch">Branch - Section</label>
+      <select id="branch" required>
+        <option value="">Select Branch - Section</option>
+        <option>CSE - A</option>
+        <option>CSE - B</option>
+        <option>ECE - A</option>
+        <option>EEE - A</option>
+        <option>AIML - A</option>
+        <option>Other / All Branches</option>
+      </select>
+
+      <label for="phone">Phone Number</label>
+      <input id="phone" type="tel"
+        inputmode="numeric" pattern="[0-9]{10}"
+        maxlength="10" placeholder="10-digit phone number"
+        title="Enter a 10-digit phone number" required>
+
+      <label for="event">Choose Event</label>
+      <select id="event" required>
+        <option value="">Select an event</option>
+        <option>Quiz</option>
+        <option>Debate</option>
+        <option>Housie</option>
+        <option>Freefire</option>
+        <option>Tug of War</option>
+        <option>Essay Writing</option>
+        <option>Ludo</option>
+      </select>
+
+      <button type="submit" style="width:100%">
+        Submit Registration
+      </button>
+    </form>
+
+    <p id="message" class="message" role="status"></p>
+  </div>
+</section>
+
+<!-- ADMIN PAGE -->
+<section id="admin" class="page">
+  <div class="container">
+    <h2>Registration Details</h2>
+    <p>Total Registrations: <strong id="total">0</strong></p>
+
+    <label for="filter">Filter by Branch</label>
+    <select id="filter" onchange="displayRegistrations()">
+      <option value="">All Branches</option>
+      <option>CSE - A</option>
+      <option>CSE - B</option>
+      <option>ECE - A</option>
+      <option>EEE - A</option>
+      <option>AIML - A</option>
+      <option>Other / All Branches</option>
+    </select>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Register No.</th>
+            <th>Branch</th>
+            <th>Phone</th>
+            <th>Event</th>
+          </tr>
+        </thead>
+        <tbody id="registrationList"></tbody>
+      </table>
+    </div>
+
+    <p id="emptyMessage">No registrations yet.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Tech Fest 2026 | College Event Registration</p>
+</footer>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active");
+
+  if (pageId === "admin") {
+    displayRegistrations();
+  }
+}
+
+function getRegistrations() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("techFestRegistrations") || "[]"
+    );
+  } catch (error) {
+    return [];
+  }
+}
+
+document.getElementById("registrationForm")
+  .addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const registration = {
+      name: document.getElementById("name").value.trim(),
+      regno: document.getElementById("regno").value.trim(),
+      branch: document.getElementById("branch").value,
+      phone: document.getElementById("phone").value.trim(),
+      event: document.getElementById("event").value
+    };
+
+    if (!registration.name || !registration.regno ||
+        !registration.branch || !registration.event) {
+      document.getElementById("message").textContent =
+        "Please fill in all the fields.";
+      return;
+    }
+
+    const registrations = getRegistrations();
+
+    const duplicate = registrations.some(item =>
+      item.regno.toLowerCase() ===
+      registration.regno.toLowerCase()
+    );
+
+    if (duplicate) {
+      document.getElementById("message").textContent =
+        "This register number is already registered.";
+      return;
+    }
+
+    registrations.push(registration);
+
+    try {
+      localStorage.setItem(
+        "techFestRegistrations",
+        JSON.stringify(registrations)
+      );
+
+      document.getElementById("message").textContent =
+        "Your registration successful!";
+
+      this.reset();
+    } catch (error) {
+      document.getElementById("message").textContent =
+        "Unable to save registration in this browser.";
+    }
+  });
+
+function displayRegistrations() {
+  const registrations = getRegistrations();
+  const filter = document.getElementById("filter").value;
+
+  const filtered = registrations.filter(item =>
+    !filter || item.branch === filter
+  );
+
+  const list = document.getElementById("registrationList");
+  list.replaceChildren();
+
+  filtered.forEach(item => {
+    const row = document.createElement("tr");
+
+    [item.name, item.regno, item.branch,
+     item.phone, item.event].forEach(value => {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      row.appendChild(cell);
+    });
+
+    list.appendChild(row);
+  });
+
+  document.getElementById("total").textContent =
+    registrations.length;
+
+  document.getElementById("emptyMessage").style.display =
+    filtered.length ? "none" : "block";
+}
+</script>
+
+</body>
+</html>
